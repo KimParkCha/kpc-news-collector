@@ -7,14 +7,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import java.io.Serializable;
+
 @Configuration
 @PropertySource("classpath:application.properties")
-public class SparkConfig {
+public class SparkConfig implements Serializable {
     @Value("${app.name}")
-    private String appName;
+    private String  appName;
 
     @Value("${master.uri}")
-    private String masterUri;
+    private static String masterUri;
 
     @Bean
     public SparkConf sparkConf() {

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class NewCrawler implements Crawler, Serializable {
+public class NewsCrawler implements Crawler, Serializable {
 
     @Override
     public List<String> prepareCrawling(WebDriver webDriver) {
@@ -57,7 +57,7 @@ public class NewCrawler implements Crawler, Serializable {
     }
 
     @Override
-    public List<DTO> crawling(List<String> urls) throws IOException {
+    public List<DTO> crawling(List<String> urls){
         List<DTO> dtos = new ArrayList<>();
         for (String url : urls) {
             try{
@@ -76,20 +76,6 @@ public class NewCrawler implements Crawler, Serializable {
             }
         }
 
-//        List<DTO> dtos = new ArrayList<>();
-//        for (String url : urls) {
-//            webDriver.get(url);
-//            String title = webDriver.findElement(By.id("title_area")).getText();
-//            String content = webDriver.findElement(By.id("dic_area")).getText();
-//            String joinDate = webDriver.findElement(By.className("media_end_head_info_datestamp_bunch")).findElement(By.tagName("span")).getText();
-//
-//            NewsDTO newsDTO = new NewsDTO();
-//            newsDTO.setTitle(title);
-//            newsDTO.setContent(content);
-//            newsDTO.setJoinDate(joinDate);
-//            dtos.add(newsDTO);
-//        }
-//        return dtos;
         return dtos;
     }
 }

@@ -16,7 +16,7 @@ public class SparkConfig implements Serializable {
     private String  appName;
 
     @Value("${master.uri}")
-    private static String masterUri;
+    private String masterUri;
 
     @Bean
     public SparkConf sparkConf() {

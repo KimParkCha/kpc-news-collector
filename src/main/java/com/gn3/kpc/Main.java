@@ -7,11 +7,11 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.openqa.selenium.WebDriver;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AutoConfig.class);
 
         Crawler crawler = ac.getBean(NewsCrawler.class);

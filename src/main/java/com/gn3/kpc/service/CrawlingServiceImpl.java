@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 @Component
 public class CrawlingServiceImpl implements CrawlingService, Serializable {
 
     @Override
-    public  boolean newsCrawling(Crawler crawler, WebDriver webDriver, JavaSparkContext javaSparkContext) {
+    public  boolean newsCrawling(Crawler crawler, WebDriver webDriver, JavaSparkContext javaSparkContext) throws ExecutionException, InterruptedException {
         List<String> strings = crawler.prepareCrawling(webDriver);
         JavaRDD<String> rdd = javaSparkContext.parallelize(strings, 3);
         JavaRDD<DTO> partitionSums = rdd.mapPartitions((Iterator<String> iter) -> {
@@ -42,7 +43,7 @@ public class CrawlingServiceImpl implements CrawlingService, Serializable {
             for (DTO dto : newsDTO) {
                 JSONObject dtoInfo = dto.DTOInfo();
                 ProducerRecord<String, String> record = new ProducerRecord<>("news",
-                        dtoInfo.toString() + "\n");
+                        dtoInfo.toString());
                 RecordMetadata metadata = kafkaProducer.send(record).get();
             }
         });
@@ -54,6 +55,7 @@ public class CrawlingServiceImpl implements CrawlingService, Serializable {
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
 
         ProducerRecord<String, String> record = new ProducerRecord<>("news", "end\n");
+        RecordMetadata metadata = kafkaProducer.send(record).get();
 
         javaSparkContext.close();
         return true;

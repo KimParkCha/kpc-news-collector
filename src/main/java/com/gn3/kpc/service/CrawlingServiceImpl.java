@@ -47,6 +47,14 @@ public class CrawlingServiceImpl implements CrawlingService, Serializable {
             }
         });
 
+        Properties props = new Properties();
+        props.put("bootstrap.servers","master:9092,sn01:9092,sn02:9092,sn03:9092");
+        props.put("key.serializer" , "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer" , "org.apache.kafka.common.serialization.StringSerializer");
+        KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
+
+        ProducerRecord<String, String> record = new ProducerRecord<>("news", "end\n");
+
         javaSparkContext.close();
         return true;
     }
